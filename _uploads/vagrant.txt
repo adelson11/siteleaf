@@ -1,0 +1,241 @@
+
+    VirtualBox [https://www.virtualbox.org/]
+
+
+    Vagrant [https://www.vagrantup.com/]
+
+
+    Git [https://git-scm.com/]
+
+
+Executa gitbash
+
+
+vim Vagrantfile
+# -*- mode: ruby -*-
+# vi: set ft=ruby :Vagrant.configure("2") do |config|
+  config.vm.define "centos7" , primary: true do |centos7|
+  centos7.vm.synced_folder ".", "/vagrant", disabled: true    
+  centos7.vm.box = "centos/7"    
+  centos7.vm.network "private_network", ip: "192.168.33.85"   
+  centos7.vm.hostname = "centos7.dtp"     
+  centos7.vm.provider "virtualbox" do |vb|      
+    vb.name = "centos/7"     
+    vb.memory = 1024      
+        end   
+   end 
+end
+
+vagrant up
+vagrant destroy -f
+vagrant box list
+vagrant ssh - acessar maquina
+
+adelson.dasilva@RJOD226761 MINGW64 ~/projetos/cursoredhat
+$ vagrant ssh
+[vagrant@centos7 ~]$ id
+uid=1000(vagrant) gid=1000(vagrant) groups=1000(vagrant),10(wheel)
+[vagrant@centos7 ~]$ sudo su
+[root@centos7 vagrant]# uname -a
+Linux centos7.dtp 3.10.0-327.el7.x86_64 #1 SMP Thu Nov 19 22:10:57 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+[root@centos7 vagrant]#
+ cat /etc/passwd   -----usuarios
+
+
+[root@centos7 vagrant]# df -Th
+Filesystem                   Type      Size  Used Avail Use% Mounted on
+/dev/mapper/vg_local-lv_root xfs        10G  1.2G  8.9G  12% /
+devtmpfs                     devtmpfs  487M     0  487M   0% /dev
+tmpfs                        tmpfs     497M     0  497M   0% /dev/shm
+tmpfs                        tmpfs     497M  6.6M  490M   2% /run
+tmpfs                        tmpfs     497M     0  497M   0% /sys/fs/cgroup
+/dev/sda1                    ext4      239M  100M  123M  45% /boot
+/dev/mapper/vg_local-lv_home xfs        10G   33M   10G   1% /home
+/dev/mapper/vg_local-lv_u01  xfs        10G   33M   10G   1% /u01
+tmpfs                        tmpfs     100M     0  100M   0% /run/user/1000
+tmpfs                        tmpfs     100M     0  100M   0% /run/user/0
+
+
+[root@centos7 vagrant]# ps -eLf
+UID        PID  PPID   LWP  C NLWP STIME TTY          TIME CMD
+root         1     0     1  0    1 13:14 ?        00:00:00 /usr/lib/systemd/systemd --switched-root --system --deserialize 20
+root         2     0     2  0    1 13:14 ?        00:00:00 [kthreadd]
+root         3     2     3  0    1 13:14 ?        00:00:00 [ksoftirqd/0]
+root         6     2     6  0    1 13:14 ?        00:00:00 [kworker/u2:0]
+root         7     2     7  0    1 13:14 ?        00:00:00 [migration/0]
+
+
+[root@centos7 vagrant]# export http_proxy=http://10.70.180.39:8080
+[root@centos7 vagrant]# export https_proxy=http://10.70.180.39:8080
+
+
+[root@centos7 vagrant]# vi /etc/yum.conf
+[root@centos7 vagrant]# yum install vim
+
+[root@centos7 vagrant]# yum -y install vsftpd
+[root@centos7 vagrant]# systemctl start vsftpd
+[root@centos7 vagrant]# systemctl status vsftpd
+vsftpd.service - Vsftpd ftp daemon
+   Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2017-06-13 14:40:20 UTC; 32s ago
+  Process: 13697 ExecStart=/usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf (code=exited, status=0/SUCCESS)
+ Main PID: 13698 (vsftpd)
+   CGroup: /system.slice/vsftpd.service
+           13698 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+
+Jun 13 14:40:20 centos7.dtp systemd[1]: Starting Vsftpd ftp daemon...
+Jun 13 14:40:20 centos7.dtp systemd[1]: Started Vsftpd ftp daemon.
+[root@centos7 vagrant]# systemctl enable vsftpd
+Created symlink from /etc/systemd/system/multi-user.target.wants/vsftpd.service to /usr/lib/systemd/system/vsftpd.service.
+[root@centos7 vagrant]# systemctl status vsftpd
+? vsftpd.service - Vsftpd ftp daemon
+   Loaded: loaded (/usr/lib/systemd/system/vsftpd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2017-06-13 14:40:20 UTC; 1min 17s ago
+ Main PID: 13698 (vsftpd)
+   CGroup: /system.slice/vsftpd.service
+           13698 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+
+Jun 13 14:40:20 centos7.dtp systemd[1]: Starting Vsftpd ftp daemon...
+Jun 13 14:40:20 centos7.dtp systemd[1]: Started Vsftpd ftp daemon.
+
+
+
+curso redhat
+
+Exercícios
+
+FERRAMENTAS ESSENCIAIS
+
+Comandos Internos e Comandos Externos
+
+1 - Digite type ls. Isso executa o comando ls onde o time interno do bash mostra informações sobre o tempo necessário para completar este comando.
+
+2 - Digite which time. Isso mostra o nome do arquivo /bin/time que foi enontrado na variável $PATH.
+
+3 - Digite echo $PATH para mostrar o conteúdo da variável $PATH. Você pode reparar que o /bin está incluído na lista, porque também há um comando interno time. O comando time do $PATH não será executado a menos que você diga ao shell especificamente para fazê-lo.
+
+4 - Digite /bin/time para executar o comando /bin/time/ ao executar ls. Você irá perceber que a saída é completamente diferente.
+
+Utilizando Redirecionamento de Entrada e Saída e Pipes
+
+1 - Abra um shell como usuário vagrant e digite cd sem argumentos. Isso garante que O diretório inicial deste usuário é o diretório atual enquanto trabalha nesse exercício. Digite pwd para verificar isso.
+
+2 - Digite ls. Você verá os resultados na tela.
+
+3 - Digite ls > /dev/null. Isso redireciona o STDOUT para o dispositivo nulo, com o resultado que você não irá visualizar.
+
+4 - Digite ls ilwehgi > /dev/null. Este comando mostra uma mensagem "não é possível acessar ilwehgi: Arquivo ou diretório não encontrado". Você vê a mensagem porque não é STDOUT, mas uma mensagem de erro escrita em STDERR.
+
+5 - Digite ls ilwehgi 2 > /dev/null. Agora você não verá mais a mensagem de erro.
+
+Trabalhando com History
+
+1 - Digite history para obter uma visão geral dos comandos que você usou anteriormente.
+
+2 - Digite alguns comandos como os seguintes:
+
+ls 
+pwd 
+cat /etc/hosts 
+ls -l 
+
+Digite history novamente.
+
+3 - Digite history -c para limpar o histórico.
+
+Vim
+
+1 - Digite vim ~/testfile. Isso inicia vim e abre um arquivo com o nome testfile em ~, que representa o seu diretório inicial atual.
+
+2 - Pressione i para entrar no modo inserção e digite o seguinte texto:
+
+vaca 
+ovelha 
+boi 
+galinha 
+cobra 
+peixe 
+oxigênio 
+
+3 - Pressione ESC para voltar ao modo de comando e digite :w para escrever o arquivo usando o mesmo nome de arquivo.
+
+4 - Digite :3 para ir a linha número 3.
+
+5 - Digite dd para excluir esta linha.
+
+6 - Digite dd novamente para excluir outra linha.
+
+7 - Digite u para desfazer a última exclusão.
+
+8 - Digite o para abrir uma nova linha.
+
+9 - Digite mais algumas palavras na posição atual do cursor:
+
+árvore 
+fazenda 
+
+10 - Pressione Esc para voltar ao modo de comando.
+
+11 - Digite :%s/boi/BOI/g e tecle enter.
+
+12 - Digite :wq para escrever no arquivo e sair. Se, por algum motivo, isso não funcionar, use :wq!.
+
+SISTEMAS EM EXECUÇÃO
+
+Systemd
+
+1 - Listar os tipos de unidades systemctl -t help
+
+2 - Digite yum -y install vsftpd para instalar o serviço Very Secure FTP.
+
+3 - Digite systemctl start vsftpd. Isso ativa o servidor FTP em sua máquina.
+
+4 - Digite systemctl status vsftpd. Você obterá o status do serviço Very Secure FTP e irá perceber que o serviço está atualmente operacional. Você pode ver tamém na linha Loaded está desabilitado. Isso significa que ele não será ativado quando o sistema reiniciar.
+
+5 - Digite systemctl enable vsftpd. Isso cria um link simbólico no diretório wants para o alvo multiusuário para garantir que o serviço seja recuperado após um reinício.
+
+6 - Digite systemctl status vsftpd novamente. Você verá agora que o arquivo da unidade mudou de desativado para ativado.
+
+7 - Listar as dependências do serviço Very Secure FTP. systemctl list-dependencies vsftpd.
+
+Isolando Targets
+
+1 - No shell, vá para o diretório /usr/lib/systemd/system. Digite grep Isolate *.target. Isso irá mostrar uma lista com todos os targets que permitem isolamento.
+
+2 - Digite systemctl isolate rescue.target. Isso muda seu computador para o target rescue. Você precisa digitar a senha de root no console do servidor para entrar.
+
+3 - Digite systemctl isolate reboot.targe.
+
+Definindo o Target Default
+
+1 - systemctl get-default para visualizar o target padrão.
+
+2 - systemctl set-default basic.target para trocar o target padrão para basic.target.
+
+
+sudo echo proxy=http://10.70.180.39:8080 >> /etc/yum.conf
+
+SISTEMAS DE ARQUIVOS
+
+FIREWALLD
+
+Firewalld Zonas
+
+1 - Abra um shell e digite o seguinte comando para pegar a zona padrão: firewall-cmd --get-default-zone.
+
+2 - Para visualizar as zonas padrão digite: firewall-cmd --get-zones.
+
+
+3 - Agora visualize os serviços disponíveis digitando: firewall-cmd --get-services.
+
+4 - Para verificar quais serviços estão disponíveis na zona atual, digite: firewall-cmd --list-services. Você verá uma pequena lista contendo uma DHCP e SSH.
+
+
+senha dataprev
+
+useradd
+userdel 
+cat /etc/passwd
+cat /etc/group
+cat /etc/shells
+
