@@ -9,7 +9,7 @@ Tô testando siteleaf
 
 ![horse21.png](/uploads/horse21.png)
 
-![horse21.png](/uploads/horse21.png)
+![fox.jpg](/uploads/fox.jpg)
 
 ![download.jpg](/uploads/download.jpg)
 
